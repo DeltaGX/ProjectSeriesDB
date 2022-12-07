@@ -1,1 +1,0 @@
-mongodb+srv://DeltaVX:<password>@cluster0.ux0ly.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
