@@ -26,10 +26,10 @@ function ByGenre() {
   }, [genresLoaded]);
 
   return (
-    <div className='bg-Lightblue min-h-screen' >
+    <div className='bg-Lightblue min-h-screen ' >
       <Navbar />
-      <div>
-      <header className="text-6xl text-center pt-5 h-24 bg-PYellow">
+      <div className='pt-20'>
+      <header className="text-6xl text-center pt-5 h-24 bg-PYellow ">
         Trending sort by Genre
       </header>
       <SelectGenre genres={genres} type="movie" />

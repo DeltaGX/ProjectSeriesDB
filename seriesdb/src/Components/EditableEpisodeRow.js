@@ -13,7 +13,7 @@ import React from "react";
                     <p className='text-center text-2xl' >{note.Episode}
                     </p>
                 </td>    
-                <td className='border-4'>
+                <td className='border-4 text-center'>
                     <input 
                         id="isWatched" 
                         type="checkbox" 

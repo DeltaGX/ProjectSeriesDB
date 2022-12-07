@@ -11,11 +11,17 @@ const UserNoteSchema = new Schema({
         type:String,
         enum: ['movie','tv']
     },
+    ContName:{
+        type:String,
+    },
+    ContPoster:{
+        type:String,
+    },
     Note: {
         type:String
     },
     Status:{
-        type:String, enum: ['PlantoWatch','Watching','Complete','Onhold','Stopped']
+        type:String, enum: ['PlantoWatch','Watching','Complete','Onhold','Stopped','']
     },
     EPseen:{
         type:Number,
@@ -29,6 +35,8 @@ const UserNoteSchema = new Schema({
         type:Boolean,
         default:false
     },
+    
+    
     
 })
 const userSchema = new Schema({

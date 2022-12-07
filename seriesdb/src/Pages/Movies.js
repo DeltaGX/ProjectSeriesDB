@@ -8,13 +8,11 @@ function Homepage() {
   const movies = useSelector((state) => state.getMovie.movies);
   const genres = useSelector((state) => state.getMovie.genres);
   const genresLoaded = useSelector((state) => state.getMovie.genresLoaded);
-  // const dataLoading = useSelector((state) => state.Fetch.dataLoading);
-  // const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getGenres());
-  }, []);
+  });
 
   useEffect(() => {
     if (genresLoaded) {
@@ -25,9 +23,9 @@ function Homepage() {
   return (
     <div className='bg-Lightblue min-h-screen' >
       <Navbar />
-      <div>
+      <div className='pt-20'>
       <header className="text-6xl text-center pt-5 h-24 bg-PYellow">
-      Top Movie
+      Trending Movie
       </header>
       
         {movies.length ? (

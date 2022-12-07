@@ -43,6 +43,7 @@ mongoose.connect(process.env.DB_URI, {useNewUrlParser:true, useUnifiedTopology:t
 //Route
 app.use('/users', require('./routes/Users.js'));
 app.use('/review', require('./routes/Review.js'));
+app.use('/episodenote', require('./routes/EpisodeNote.js'));
 
 //error callback
 app.use((err, req, res, next) => {

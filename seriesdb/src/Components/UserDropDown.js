@@ -1,27 +1,41 @@
-import {useContext} from 'react';
+import {useContext, useState, useEffect} from 'react';
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { AuthContext } from "../Context/AuthContext";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
   }
   
-  export default function UserDropDown(userid) {
-  const {dispatch} = useContext(AuthContext);
-  const navigate = useNavigate();
-  const logout = async (e) => {
-    this.props.islogout(true)
-  }
+  export default function UserDropDown(user) {
+    const [User,setUser] = useState({});
+    const {dispatch} = useContext(AuthContext);
+    const navigate = useNavigate();
+    const logout = async (e) => {
+      e.preventDefault(); 
+      dispatch({ type: "LOGOUT"});
+      navigate('/')
+    }
+    
+    useEffect(()=>{
+      let isLoading = true
+      if(isLoading == true && user != undefined){
+        setUser((prev) => (user))
+        console.log(User)
+      }
+      return() => {
+        isLoading = false
+      }
+      },[]);
 
     return (
-      <Menu as="div" className="relative inline-block text-left">
+      <Menu as="div" className="relative inline-block text-center">
         <div>
-          <Menu.Button className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100">
-            Options
+          <Menu.Button className="ml-10 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100">
+            User:{User?.user?.UserName}
             < FontAwesomeIcon icon={faChevronDown} className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
           </Menu.Button>
         </div>
@@ -38,45 +52,46 @@ import { useNavigate } from 'react-router-dom';
             <div className="py-1">
               <Menu.Item>
                 {({ active }) => (
-                  <a
-                    href={`localhost:3000/user/${userid}`}
+                  <button
+                    // onClick={navigate(`localhost:3000/user/${User?.user?._id}`)}
                     className={classNames(
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                       'block px-4 py-2 text-sm'
                     )}
-                  >
+                  ><Link to={`/user/${User?.user?._id}`}>
                     YourProfile
-                  </a>
+                  </Link>
+                  </button>
                 )}
               </Menu.Item>
               <Menu.Item>
                 {({ active }) => (
-                  <a
-                  href={`localhost:3000/user/${userid}/list`}
+                  <button
+                  // onClick={navigate(`localhost:3000/user/${User?.user?._id}/list`)}
                     className={classNames(
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block px-4 py-2 text-sm'
+                      'block w-full px-4 py-2 text-sm'
                     )}
                   >
-                    YourList
-                  </a>
+                    <Link to={`/user/${User?.user?._id}/list`}>
+                      YourList
+                    </Link>
+                  </button>
                 )}
               </Menu.Item>
-              <form action={logout}>
                 <Menu.Item>
                   {({ active }) => (
                     <button
-                      type="submit"
+                      onClick = {logout}
                       className={classNames(
                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                        'block w-full px-4 py-2 text-left text-sm'
+                        'block w-full px-4 py-2 text-sm'
                       )}
                     >
-                      Sign out
+                      Logout
                     </button>
                   )}
                 </Menu.Item>
-              </form>
             </div>
           </Menu.Items>
         </Transition>

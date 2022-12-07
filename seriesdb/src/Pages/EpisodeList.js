@@ -185,8 +185,8 @@ function EpisodeList(){
     return(
         <div className='bg-Lightblue min-h-screen'>
             <NavBar/>
-                <div className="w-3/4 h-20 bg-PYellow m-auto mt-10 flex items-center justify-center"> {/* YellowSquare */}
-                    <div className='text-xl font-bold'>{movieInfo?.name || movieInfo?.title || movieInfo?.original_name || movieInfo?.original_title} </div>
+                <div className="w-3/4 h-20 bg-PYellow m-auto pt-36 flex items-center justify-center"> {/* YellowSquare */}
+                    <div className='text-3xl font-bold mb-16'>{movieInfo?.name || movieInfo?.title || movieInfo?.original_name || movieInfo?.original_title} </div>
                 </div>
                 <div className="w-3/4 min-h-screen bg-gray-100 mx-auto shrink-0 "> {/* BigSquare */}
                         {Usernote?.SeasonNote.map((note,i) =>

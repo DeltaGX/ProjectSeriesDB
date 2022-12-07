@@ -24,7 +24,8 @@ const reviewSchema = new Schema({
     },
     IsRecommend: {
      type:Boolean, 
-     required:true
+     required:true,
+     default:false
     },
     Review: {
      type:String

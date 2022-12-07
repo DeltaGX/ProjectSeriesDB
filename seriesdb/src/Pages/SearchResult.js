@@ -41,7 +41,7 @@ const conttype = localStorage.getItem('contenttype')
   return (
     <div className='bg-Lightblue min-h-screen'>
       <Navbar />
-      <div>
+      <div className=' pt-20' >
       <header className="text-6xl text-center pt-5 h-24 bg-PYellow">
         Search Result of {search} from {type} 
       </header>

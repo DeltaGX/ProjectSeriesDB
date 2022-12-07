@@ -27,7 +27,7 @@ function Login() {
   return (
     <div className='bg-yellow-50 min-h-screen'>
      <NavBar/>
-     <div className='text-center'>
+     <div className='text-center pt-20'>
      <form onSubmit={handleClick}>
         <div>
         <p className='text-5xl' >

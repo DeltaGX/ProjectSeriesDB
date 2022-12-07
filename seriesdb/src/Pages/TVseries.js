@@ -1,18 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Navbar from "../Components/NavBar";
-import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchMoviesbyGenre, getGenres } from "../Context/FetchContext";
-import SelectGenre from "../Components/SelectGenre";
 import NormalSlider from "../Components/NormalSlider";
 
 function TVSeries() {
   const movies = useSelector((state) => state.getMovie.movies);
   const genres = useSelector((state) => state.getMovie.genres);
   const genresLoaded = useSelector((state) => state.getMovie.genresLoaded);
-  // const dataLoading = useSelector((state) => state.Fetch.dataLoading);
 
-  // const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,9 +24,9 @@ function TVSeries() {
   return (
     <div className='bg-Lightblue min-h-screen'>
       <Navbar />
-      <div>
+      <div className='pt-20'> 
       <header className="text-6xl text-center pt-5 h-24 bg-PYellow">
-        Top TVSeries 
+        Trending TVSeries 
       </header>
       
         {movies.length ? (

@@ -1,4 +1,4 @@
-import React, { useState,useEffect,Fragment } from 'react';
+import React, { useState,useEffect,useLayoutEffect,Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react'
 import { useNavigate } from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -12,9 +12,8 @@ function classNames(...classes) {
 
 function Searchbar() {
     const [search, setSearch] = useState();
-    const [type, settype] = useState('movie');
+    const [type, settype] = useState();
     const navigate = useNavigate();
-    const searchtype = localStorage.getItem('contenttype')
     
     const handleDropClick=async(e)=>{
         settype(e.target.value);
@@ -26,10 +25,14 @@ function Searchbar() {
         }
     }
     const handleClick = async (e) => {
+        const searchtype = localStorage.getItem('contenttype')  
+        if (searchtype === null) {
+            searchtype = 'movie'
+        }
         if (search != undefined){
         localStorage.setItem('search',search)
-        }
         navigate(`/search/${searchtype}/${search}`)
+        }
         }
         
     useEffect(() => {
@@ -42,7 +45,7 @@ function Searchbar() {
         <Menu as="div" className="relative text-left">
         <div>
           <Menu.Button className="rounded-md ml-16 border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100">
-            {type}
+            {type ? type : "PleaseChooseType"}
             < FontAwesomeIcon icon={faChevronDown} className="mr-1 ml-2 h-5 w-5" aria-hidden="true" />
           </Menu.Button>
         </div>

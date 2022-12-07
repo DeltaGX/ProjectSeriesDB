@@ -21,18 +21,43 @@ updateUser: async function(req,res,next){
     next(err);
   }
 },
-// patchUsernote: async function(req,res,next){
-//   try {
-//     const updatedUser = await User.findByIdAndUpdate(
-//       req.params.id,
-//       {$push: req.body},
-//       { runValidators: true, context: 'query' }
-//     );
-//     res.status(200).json(updatedUser);
-//   } catch (err) {
-//     next(err);
-//   }
-// },
+patchUsernote: async function(req,res,next){
+  const test = await User.countDocuments({"_id":req.params.id, "Usernote.Contid":req.body.Contid})
+  // console.log(req.body.Usernote.Contid)
+  if (test > 0){
+    const updatedUser = await User.findOneAndUpdate(
+      {"_id":req.params.id, "Usernote.Contid":req.body.Contid},
+      {$set: {"Usernote.$[element]": req.body}},
+      { runValidators: true, 
+        arrayFilters: [{ 'element.Contid': req.body.Contid }],
+      new: true,
+    });
+    res.status(200).json(updatedUser);
+  } else {
+      const updatedUser = await User.findOneAndUpdate(
+        {"_id":req.params.id},
+        {$push: {Usernote:req.body}},
+        { runValidators: true, 
+        new: true,
+      })
+    res.status(200).json(updatedUser);
+  }
+},
+
+deleteUsernote: async function(req, res, next){
+  try {
+    const deletenote = await User.findByIdAndUpdate({"_id":req.params.id}, { 
+      $pull: { 
+        Usernote: {
+          _id: req.params.noteid
+        }
+      } 
+    })
+    res.status(200).json(deletenote);
+  } catch (err) {
+    next(err);
+  }
+},
 
 getUser: async function(req,res,next){
   try {
@@ -69,13 +94,13 @@ Login: async function(req, res, next){
       process.env.JWT
     );
 
-    const { password, isAdmin, ...otherDetails } = user._doc;
+    const { password, ...otherDetails } = user._doc;
     res
       .cookie("access_token", token, {
         httpOnly: true,
       })
       .status(200)
-      .json({ details: { ...otherDetails }, isAdmin });
+      .json({ details: { ...otherDetails }});
   } catch (err) {
     next(err);
   }

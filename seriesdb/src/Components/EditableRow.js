@@ -32,7 +32,7 @@ import {Link} from "react-router-dom";
             
                 <td className='border-4 text-center'>
                     <div className="">
-                        <input id="EPseen" type='number' className='w-10 text-center' 
+                        <input name="EPseen" type='number' className='w-10 text-center' 
                             defaultValue={note?.EPseen} 
                             min="1"
                             onChange={handleChange} 
@@ -42,7 +42,7 @@ import {Link} from "react-router-dom";
                 </td>
                 <td className='border-4 text-center'>
                     <div >
-                        <input id="UserScore" type='number' className='text-center' 
+                        <input name="UserScore" type='number' className='text-center' 
                             defaultValue={note?.UserScore} min="0" max="10" 
                             onChange={handleChange} 
                             onKeyPress={(e) => {if (!/[0-9]/.test(e.key)) {e.preventDefault()}}}
@@ -51,7 +51,7 @@ import {Link} from "react-router-dom";
                 </td>
                 <td className='border-4'>
                     <div >
-                        <textarea id="Note" defaultValue={note?.Note} className='overflow-auto border-2 w-64' 
+                        <textarea name="Note" defaultValue={note?.Note} className='overflow-auto border-2 w-64' 
                             onChange={handleChange}>
                     </textarea>
                     </div>
@@ -69,7 +69,7 @@ import {Link} from "react-router-dom";
                     </td>} */}
                 <td className='border-4 text-center'>
                     <input 
-                        id="isFavourite" 
+                        name="isFavourite" 
                         type="checkbox" 
                         className='text-center'
                         defaultChecked={note.isFavourite}

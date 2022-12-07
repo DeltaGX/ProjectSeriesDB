@@ -11,7 +11,6 @@ function classNames(...classes) {
 
 export default function TypeDropDown(search) {
     const [type,settype] = useState();
-    const Navigate= useNavigate()
 
     const handleClick=async(e)=>{
         settype((currenttype) => currenttype, e.target.value);

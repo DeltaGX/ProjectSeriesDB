@@ -5,7 +5,7 @@ const passport = require('passport');
 const User = require('../models/User.js');
 const {createError} = require('../config/Error.js');
 const jwt = require("jsonwebtoken");
-const {updateUser,getUser,patchUsernote,getUsernote} = require("../controllers/users.js");
+const {updateUser,getUser,patchUsernote,getUsernote,deleteUsernote} = require("../controllers/users.js");
 const {verifyUser}= require("../config/verifyToken.js");
 
 // register
@@ -79,16 +79,18 @@ router.post("/login" ,async(req, res, next) => {
 //   res.send("hello user, you are logged in and you can delete your account")
 // })
 
-//UPDATE USER AND NOTE
-router.put("/:id", verifyUser, updateUser);
+// UPDATE USER AND NOTE
+// router.put("/:id", verifyUser, updateUser);
 //GET
 router.get("/:id", verifyUser, getUser);
-//PATCH 
-// router.patch("/:id/", verifyUser, patchUsernote); obsolete
+// PATCH 
+router.put("/:id/", verifyUser, patchUsernote);
 //verifyUser
 router.get("/verify/:id/", verifyUser);
 //getusernote
 router.get("/:id/usernote", verifyUser, getUsernote);
+//deleteusernote
+router.delete("/:id/:noteid", verifyUser, deleteUsernote);
 
 
 module.exports = router;

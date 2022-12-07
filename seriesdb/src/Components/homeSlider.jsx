@@ -10,11 +10,11 @@ export default function Slider({ movies }) {
       <CardHolder data={getMoviesFromRange(12, 24)} title="New Releases" />
       <CardHolder
         data={getMoviesFromRange(24, 36)}
-        title="Blockbuster Movies"
+        title="Blockbuster"
       />
       <CardHolder
         data={getMoviesFromRange(36, 48)}
-        title="Popular on Netflix"
+        title="Popular"
       />
       <CardHolder data={getMoviesFromRange(48, 60)} title="You May Like" />
       <CardHolder data={getMoviesFromRange(60, 72)} title="Epics" />

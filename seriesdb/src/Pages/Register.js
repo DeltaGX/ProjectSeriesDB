@@ -26,30 +26,22 @@ function Register(){
   return(
     <div>
         <NavBar />
-        <div className='text-center'>
+        <div className='text-center pt-36 bg-yellow-50 min-h-screen'>
          <form onSubmit={handleClick}>
            <div className='flex flex-col items-center space-y-2 py-4'>
             <p className='text-4xl'>Register</p>
                 <div className='relative'>
                   <body className="text-left">Email*</body>
-                  <input type="text" className="h-10 w-96 p-4 focus:shadow focus:outline-none border-2" value={Email} onChange={(e) => SetEmail(e.target.value)} />
+                  <input type="email" className="h-10 w-96 p-4 focus:shadow focus:outline-none border-2" value={Email} onChange={(e) => SetEmail(e.target.value)} />
                 </div> 
                 <div className='relative'>
-                  <body className="text-left">UserName*</body>
+                  <body className="text-left">Username*</body>
                   <input type="text" className="h-10 w-96 p-4 focus:shadow focus:outline-none border-2" value={UserName} onChange={(e) => SetUserName(e.target.value)} />
                 </div>
                 <div className='relative'>
                   <body className="text-left">password*</body>
                   <input type="password" className="h-10 w-96 p-4 focus:shadow focus:outline-none border-2" value={password} onChange={(e) => SetPassword(e.target.value)} />
                 </div>
-                {/* <div className='relative'>
-                  <body className="text-left">Gender</body>
-                  <input type="text" className="h-10 w-96 p-4 focus:shadow focus:outline-none border-2" placeholder="Gender"/>
-                </div>
-                <div className='relative'>
-                  <body className="text-left">Date of Birth</body>
-                  <input type="text" className="h-10 w-96 p-4 focus:shadow focus:outline-none border-2" placeholder="Date of Birth"/>
-                </div> */}
                 {error && <span>*{error.message}*</span>}
                 <button type="submit" disabled={loading} className='border-2 bg-gray-100 text-3xl'>
                   <p className='p-2'>Register</p>

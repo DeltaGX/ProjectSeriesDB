@@ -1,41 +1,25 @@
-import React, { Fragment , useState, useEffect, useContext } from 'react'
+import React, { Fragment , useState, useEffect} from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
-import axios from 'axios';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function StatusDropDown({current,userid,contid,usernote}) {
-    const [Usernote, setUsernote] = useState();
-    const Status = usernote.Status
-    const handleChange = (e) => {
-      setUsernote((prev) => ([{ ...prev, "Status": e.target.value,"Contid" : contid }]));
-    };
-
-    const handleSave=async()=>{
-      console.log(Usernote)
-      if (userid != undefined){
-      try {
-        const res = await axios.put(`http://localhost:4000/users/${userid}`, 
-          [{Usernote}]
-        , {withCredentials:true})
-        // window.location.reload()
-        console.log(res)
-      } catch (err) {
-        console.log(err);}
-      }}
-
+export default function StatusDropDown2({current,handlechange}) {
+    const [Status,setStatus] = useState(current);
+   
       useEffect(() => {
-        if (usernote != []){
-        setUsernote((prev) => ({...prev, usernote}))
-      }
-        handleSave();
-      }, []);
-      
-
+        let setLoading = true;
+        if(setLoading){
+            setStatus((prev)=>(current))
+        }
+           return() => {
+            setLoading = false
+       }
+           }, [current]);
+             
     return (
       <Menu as="div" className="relative text-left flex justify-center">
         <div>
@@ -54,11 +38,10 @@ export default function StatusDropDown({current,userid,contid,usernote}) {
           leaveTo="transform opacity-0 scale-95"
         >
           <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-            <div className="py-1">
-              <Menu.Item id='planbtn'>
+            <div >
+              <Menu.Item>
                 {({ active }) => (
-                  <button  value='PlantoWatch' onClick={(e) => {handleChange(e); handleSave(e);}}
-                    href="#"
+                  <button  name='Status' value='PlantoWatch' onClick={(e)=>{handlechange(e);setStatus(e.target.value)}}
                     className={classNames(
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                       'block w-full px-4 py-2 text-sm'
@@ -70,8 +53,7 @@ export default function StatusDropDown({current,userid,contid,usernote}) {
               </Menu.Item>
               <Menu.Item >
                 {({ active }) => (
-                  <button value='Watching' onClick={(e) => {handleChange(e); handleSave(e);}}
-                    href="#"
+                  <button name='Status' value='Watching' onClick={(e)=>{handlechange(e);setStatus(e.target.value)}}
                     className={classNames(
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                       'block w-full px-4 py-2 text-sm'
@@ -83,8 +65,7 @@ export default function StatusDropDown({current,userid,contid,usernote}) {
               </Menu.Item>
               <Menu.Item>
                 {({ active }) => (
-                  <button value='Complete' onClick={(e) => {handleChange(e); handleSave(e);}}
-                    href="#"
+                  <button name='Status' value='Complete' onClick={(e)=>{handlechange(e);setStatus(e.target.value)}}
                     className={classNames(
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                       'block w-full px-4 py-2 text-sm'
@@ -96,7 +77,7 @@ export default function StatusDropDown({current,userid,contid,usernote}) {
               </Menu.Item>
                 <Menu.Item >
                   {({ active }) => (
-                    <button value='Onhold' onClick={(e) => {handleChange(e); handleSave(e);}}
+                    <button name='Status' value='Onhold' onClick={(e)=>{handlechange(e);setStatus(e.target.value)}}
                       className={classNames(
                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                         'block w-full px-4 py-2 text-sm'

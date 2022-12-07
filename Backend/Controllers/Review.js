@@ -7,10 +7,10 @@ createReview: async function(req, res, next){
     const newReview = new Review(req.body);
     try {
     newReview.UserID = UserId;
-    newReview.OnlineContent = ContId;
+    newReview.ContID = ContId;
     const savedReview = await newReview.save();
     res.status(200).json(savedReview);
-  } catch (err) {
+  } catch (err) {s
     next(err);
   }
 },

@@ -1,6 +1,7 @@
 import NavBar from '../Components/NavBar.js';
 import EditableRow from '../Components/EditableRow.js'
 import ReadOnlyRow from '../Components/ReadOnlyRow.js'
+import FilterDropDown from '../Components/FilterDropDown'
 import React, { useContext,useState,useEffect,Fragment } from 'react';
 import { AuthContext } from '../Context/AuthContext.js';
 import axios from 'axios';
@@ -21,6 +22,12 @@ function Userlist(){
                 "isFavourite":false,
       });
     const [save, setsave] = useState(false);
+    const [FilteredNote, setFilteredNote] = useState()
+    const [FilterControl, setFilterControl] = useState({
+                type:'all',
+                contstatus:'all',
+                favourite:'all'
+    })
 
     const handleEditClick = (e, content) => {
     e.preventDefault();
@@ -50,6 +57,7 @@ function Userlist(){
         try { 
          const res = await axios.get(`http://localhost:4000/users/${user._id}/Usernote`, { withCredentials: true });
          setUsernote(res.data);
+         setFilteredNote(res.data);
         } catch (err) {
          console.log(err)
         }
@@ -68,11 +76,14 @@ function Userlist(){
     //     }
 
     const handleChange = (e) => {
-        seteditRowData((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+        seteditRowData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
       };
     const handleCheckboxChange = (e) => {
-        seteditRowData((prev) => ({ ...prev, [e.target.id]: e.target.checked }));
+        seteditRowData((prev) => ({ ...prev, [e.target.name]: e.target.checked }));
     };
+    const handleFilterChange = (e) => {
+      setFilterControl((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
     
     const handleSave=async(e)=>{
         if (user._id !== undefined){
@@ -94,11 +105,26 @@ function Userlist(){
         } catch (err) {
             console.log(err);}
         }}
+
+    const filterNote = async(FilterControl)=>{
+        let filtered = Usernote
+        var isfavourite = FilterControl.favourite == "true"; 
+        if (Usernote !== undefined){
+          if(FilterControl.type !== 'all')
+            {filtered = filtered.filter(note => note.ContType === FilterControl.type)}
+          if(FilterControl.contstatus !== 'all')
+            {filtered = filtered.filter(note => note.Status === FilterControl.contstatus)}
+          if(FilterControl.favourite !== 'all')
+            {filtered = filtered.filter(note => note.isFavourite === isfavourite)}
+        }
+        setFilteredNote(filtered)
+    }
       
       useEffect(() => {
         let setLoading = true;
         if(user && setLoading){
-           fetchUsernote();}
+           fetchUsernote();
+          }
         return() => {
             setLoading = false  
         }
@@ -111,37 +137,47 @@ function Userlist(){
             }
                return() => {
                 setLoading = false
-           }
+            }
             }, [save]);
+
+      useEffect(() => {
+              let setLoading = true;
+              if(setLoading){
+                  filterNote(FilterControl);
+                  console.log(FilterControl)
+                  console.log(FilteredNote)
+              }
+                 return() => {
+                  setLoading = false
+             }
+              }, [FilterControl]);
 
     return(
         <div className='bg-Lightblue min-h-screen'>
             <NavBar/>
-                <div>
-
-                </div>
-                <div className="w-4/5 h-20 bg-PYellow m-auto mt-10 flex items-center justify-center"> {/* YellowSquare */}
-                    <p className='text-2xl font-bold'>{user?.UserName} list
+                <div className="w-4/5 h-20 bg-PYellow mx-auto pt-36 flex items-center justify-center"> {/* YellowSquare */}
+                    <p className='text-2xl font-bold pb-16'>{user?.UserName} list
                     </p>
                 </div>
                 <div className="relative w-4/5 min-h-screen bg-gray-100 m-auto flex flex-nowrap shrink-0 "> {/* BigSquare */}
-                    <div className='justify-center'> 
+                    <div className='w-screen justify-center'> 
+                    <FilterDropDown current={FilterControl} handleFilterchange={handleFilterChange}/>
                     <table className='border-collapse w-fit'>
                     <thead >
                     <tr className='border-4'>
-                        <th className='border-4'>Poster</th>
-                        <th className='border-4'>Name</th>
-                        <th className='border-4'>type</th>
-                        <th className='border-4'>Status</th>
-                        <th className='border-4'>EPseen</th>
-                        <th className='border-4'>YourScore</th>
-                        <th className='border-4'>Note</th>
+                        <th className='border-4 w-48'>Poster</th>
+                        <th className='border-4 w-80'>Name</th>
+                        <th className='border-4 w-12'>Type</th>
+                        <th className='border-4 w-36'>Status</th>
+                        <th className='border-4 w-10'>EPseen</th>
+                        <th className='border-4 w-16'>YourRating</th>
+                        <th className='border-4 w-64'>Note</th>
                         <th className='border-4'>Favourite?</th>
-                        <th className='border-4'>Edit</th>
+                        <th className='border-4 w-40'>Edit</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {Usernote.map((note,i) => {
+                    {FilteredNote?.map((note,i) => {
                         return(
                              <Fragment>
                              {editRowId === note._id ? (
@@ -162,7 +198,8 @@ function Userlist(){
                                />
                              )}
                            </Fragment>
-                         )})}
+                         )}) 
+                        }
                     </tbody>
                     </table>
                 </div>

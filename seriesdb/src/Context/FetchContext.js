@@ -15,7 +15,6 @@ import {
   export const getGenres = createAsyncThunk("getMovie/genres", async () => {
      const { data: { genres },
   } = await axios.get(`https://api.themoviedb.org/3/genre/movie/list?api_key=cc9998af9f9a12b4c78dcb7f12951729`)
-    // console.log(genres);
     return genres;
   });
   
@@ -25,7 +24,6 @@ import {
       const {
         data: { results },
       } = await axios.get(`${api}${paging ? `&page=${i}` : ""}`);
-      console.log(results)
       createArrayFromRawData(results, moviesArray, genres,type);
     }
     console.log(moviesArray)
@@ -38,7 +36,6 @@ import {
       const {
         data: { results },
       } = await axios.get(`${api}${paging ? `&page=${i}` : ""}`);
-      console.log(results)
       createArrayFromData(results, moviesArray, type);
     }
     console.log(moviesArray)

@@ -4,104 +4,124 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../Context/AuthContext.js';
 import axios from 'axios';
 import { API_KEY,TMDB_BASE_URL } from "../Utils/constant";
-import Selector from "../Components/selector.js"
+import ReviewDrop from "../Components/ReviewDropDown"
 
 export default React.memo(function OnlineCont({ }) {
         const navigate = useNavigate();
+        const Contid = localStorage.getItem('Contid')
+        const type = localStorage.getItem('contenttype')
         const [movieInfo, setmovieInfo] = useState([]);
-        const [userNote, setuserNote] = useState([])
+        const [Review, setReview] = useState([])
         const { user } = useContext(AuthContext);
         async function fetchContent() {
              try {  
-              const res = await axios.get(`${TMDB_BASE_URL}${window.location.pathname}?api_key=${API_KEY}&language=en-US`);
+              const res = await axios.get(`${TMDB_BASE_URL}/${type}/${Contid}?api_key=${API_KEY}&language=en-US`);
               console.log(res.data);
               setmovieInfo(res.data);
              } catch (err) {
               console.log(err)
              }
-           }
-        async function fetchuserNote() {
-            try { 
-             const res = await axios.get(`http://localhost:4000/users/${user._id}/usernote`, { withCredentials: true });
-             const note = res.data.find(({Contid}) => Contid === movieInfo.id)
-             console.log(note);
-             setuserNote(note);
+           }    
+        const handleChange = (e) => {
+            setReview((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+          };
+        
+        const handleSave=async(e)=>{
+            if (user._id != undefined){
+            try {
+              const res = await axios.put(`http://localhost:4000/users/${user._id}`, 
+              Review, {withCredentials:true})
+              window.location.reload()
+              console.log(res)
             } catch (err) {
-             console.log(err)
-            }
-          }
+              console.log(err);}
+            }}
+
         useEffect(() => {
            fetchContent();
           }, []);
           
-        useEffect(() => {
-           if(user)
-           fetchuserNote();
-           }, [movieInfo.id]);
         
     return(
-        <div style={{backgroundImage: (`https://image.tmdb.org/t/p/w500${movieInfo.backdrop_path}`)}}>
-            <NavBar />
-                <div className="w-3/4 h-20 bg-PYellow m-auto mt-10 flex items-center"> {/* YellowSquare */}
-                    <p className='ml-8 text-xl font-bold'>{movieInfo.name || movieInfo.title || movieInfo.original_name || movieInfo.original_title}</p>
+            <div className='bg-Lightblue min-h-screen'>
+            <NavBar/>
+                <div className="w-3/4 h-20 bg-PYellow m-auto mt-10 flex items-center justify-center"> {/* YellowSquare */}
+                    <p className='text-2xl font-bold'>{movieInfo.name|| movieInfo.title || movieInfo.original_name || movieInfo.original_title} Review
+                    </p>
                 </div>
-                <div className="relative w-3/4 h-screen mb-20 bg-gray-100 m-auto flex flex-wrap "> {/* BigSquare */}
-                    <img alt='' src={`https://image.tmdb.org/t/p/w500${movieInfo.poster_path}`} className='w-48 h-60 ml-5 mt-10'/>
-                    <div className='absolute top-72 left-8'>
-                        <p className='text-2xl ml-7 '>Your Status</p>
-                        <p className='text-xl'>Status:{userNote?.Status}</p>
-                        <p className='text-xl'>Ep Seen:{userNote?.EPseen}</p>
-                        <p className='text-xl'>Your Score:{userNote?.UserScore}</p>
-                        <p className='text-xl'>Your Note: </p>
-                        <p className='w-24'>{userNote?.Note}</p>
-                        {user && <a href={`${window.location.href}`}> 
-                        <p className='text-blue-500 underline text-center' >Edit</p>
-                        </a>}
-                        {user && !(userNote?.isFavourite) ? <p className='text-blue-500 underline text-center'>Not Favourite</p>
-                        :<p className='text-blue-500 underline text-center'>Already Favourite</p>}
-                    </div>
-                    <div className='justify-end'>
-                        <div className="absolute w-4/5 h-screen mb-20 ml-5 bg-gray-200 flex flex-wrap space-y-4"> {/* SmallSquare */}
-                            <p className='relative ml-6 mt-4 h-10 w-full text-xl'>Status and Information:
-                                <p className='absolute top-7'>Synopsis:</p>
-                                <p className='absolute top-14 w-4/5 h-40 overflow-auto fonts-sans'>{movieInfo?.overview}</p>
-                            </p>
-                            <div className='ml-5 mb-36 h-20'>
-                                <p className="text-2xl">Information:</p>
-                                <p className="text-xl">Genre:{movieInfo?.genres?.map((genres) =>
-                                                    <p key={genres.ID}>{genres.name}</p>)}</p>
-                                <p className='text-xl'>Status: {movieInfo.status}</p>
-                                <p className='text-xl'>Episode: 1</p>
-                                <p className='text-xl'>Aired: 19 september 2021</p>
-                                <p className='text-xl'>Studio: {movieInfo?.production_companies?.map((production_companies) =>
-                                                    <p key={production_companies.ID}>{production_companies.name}</p>)}</p>
-                                <p className='text-xl'>Country: {movieInfo?.production_countries?.map((production_countries) =>
-                                                    <p key={production_countries.ID}>{production_countries.name}</p>)}</p>
-                            </div>
-                            <div className='pl-24 h-20 ml-2'>
-                                <p className='text-2xl'>Link:</p>
-                                {movieInfo?.imdb_id ? <a href={`https://www.imdb.com/title/${movieInfo.imdb_id}`}>
-                                <p className='text-blue-500 underline text-3xl'>IMDB</p>
-                                </a> : <a href={`https://www.imdb.com/find?q=${movieInfo.name|| movieInfo.title || movieInfo.original_name || movieInfo.original_title}`}>
-                                    <p className='text-blue-500 underline text-3xl'>IMDB</p></a>}
-                                <p className='text-xl'>score:{movieInfo?.vote_average} </p>
-                                <p className='text-xl'>from:{movieInfo?.vote_count} vote</p>
-                            </div>
-                            <div className='pl-20'>
-                                <div className='ml-5 h-20'>
-                                    <p className='text-3xl'>Can be watch on:</p>
-                                    <p className='text-blue-500 underline text-3xl'>Theater</p>
-                                <div className='h-20'>
-                                    <p className='text-3xl'>Reviews:</p>
-                                    <Link to={`/Movies/${movieInfo.id}/Reviews`}>
-                                        <p className='text-blue-500 underline text-3xl'>Read All Review Here</p>
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div className="relative w-3/4 min-h-screen mb-20 bg-gray-100 m-auto flex flex-nowrap shrink-0 "> {/* BigSquare */}
+                    <div className='justify-center'>
+                    <form onSubmit={handleSave}>    
+                    <table className='border-collapse w-fit h-screen ml-72'>
+                    <thead >
+                    <tr className='border-4'>
+                        <th className='border-4 w-40'>User</th>
+                        <th className='border-4'>Recommend?</th>
+                        <th className='border-4'>Score</th>
+                        <th className='border-4 w-80'>Review</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {Review.map((note,i) => {
+                            return(
+                            <tr key={i}>    
+                                <td className='w-80 text-center border-4'>
+                                    <Link to={`/${note.ContType}/${note.Contid}`}><p className='text-blue-500 underline'>{note?.ContName}
+                                    </p></Link>
+                                </td>
+                                <td className='border-4'>
+                                    <p className='w-fit text-center' >{note.ContType}
+                                    </p>
+                                </td>
+                                <td className='border-4'>
+                                    <ReviewDrop />
+                                </td>
+                            
+                                <td className='border-4'>
+                                    <div>
+                                        <input id="EPseen" type='number' className='w-10 ml-2' 
+                                            defaultValue={note?.EPseen} 
+                                            min="1"
+                                            onChange={handleChange} 
+                                    onKeyPress={(e) => {if (!/[0-9]/.test(e.key)) {e.preventDefault()}}}
+                                        />
+                                    </div>
+                                </td>
+                                <td className='border-4'>
+                                    <div >
+                                        <input id="UserScore" type='number' className='ml-2' 
+                                            defaultValue={note?.UserScore} min="0" max="10" 
+                                            onChange={handleChange} 
+                                    onKeyPress={(e) => {if (!/[0-9]/.test(e.key)) {e.preventDefault()}}}
+                                        />
+                                    </div>
+                                </td>
+                                <td className='border-4'>
+                                    <div >
+                                        <textarea id="Note" defaultValue={note?.Note} className='overflow-auto border-2 w-72' 
+                                            onChange={handleChange}>
+                                </textarea>
+                                    </div>
+                                    </td>
+                                <td className='border-4 w-30 justify-center mt-24'>
+                                    <button value='Save Edit' type='submit' className='text-blue-500 underline border-2 bg-white' >
+                                        SaveEdit
+                                    </button>
+                                    <button value='Delete'className='text-blue-500 underline border-2 bg-white'>
+                                        Remove
+                                    </button><br/>
+                                    <Link to={`/user/${user._id}/${note.Contid}`}>
+                                    <button className='text-blue-500 underline border-2 bg-white' onClick={()=>{localStorage.setItem('Contid',note?.Contid); localStorage.setItem('contenttype',note?.ContType)}}>
+                                        ChapterNote
+                                    </button></Link>
+                                </td>
+                                </tr>                        
+                    )})}
+                    </tbody>
+                    </table>
+                    </form>
                 </div>
-            </div>
+        </div>
         </div>
     )
 });
