@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../Components/NavBar";
 import { useNavigate } from "react-router-dom";
-import { useSelector} from "react-redux";
+// import { useSelector} from "react-redux";
 // import { fetchSearch } from "../Context/FetchContext";
 // import SelectGenre from "../Components/SelectGenre";
 import NormalSlider from "../Components/NormalSlider";
@@ -21,10 +21,10 @@ const conttype = localStorage.getItem('contenttype')
       const res = await axios.get(`${TMDB_BASE_URL}/search/${conttype}?api_key=${API_KEY}&query=${search}`);
       setmovieInfo(res.data.results);
       setsearch(search);
-      if(conttype == 'tv'){
+      if(conttype === 'tv'){
         settype('TVSeries')
       } 
-      if(conttype == 'movie'){
+      if(conttype === 'movie'){
         settype('Movies')
       }
     } catch (err) {

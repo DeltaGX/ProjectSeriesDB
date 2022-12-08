@@ -22,7 +22,7 @@ import { Link, useNavigate } from 'react-router-dom';
     
     useEffect(()=>{
       let isLoading = true
-      if(isLoading == true && user != undefined){
+      if(isLoading === true && user !== undefined){
         setUser((prev) => (user))
         console.log(User)
       }

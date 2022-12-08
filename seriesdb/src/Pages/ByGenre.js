@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect} from "react";
 import Navbar from "../Components/NavBar";
-import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchDatabyGenre, getGenres } from "../Context/FetchContext";
 import SelectGenre from "../Components/SelectGenre";
@@ -32,7 +31,7 @@ function ByGenre() {
       <header className="text-6xl text-center pt-5 h-24 bg-PYellow ">
         Trending sort by Genre
       </header>
-      <SelectGenre genres={genres} type="movie" />
+      <SelectGenre genres={genres} />
         {movies.length ? (
             <Slider movies={movies} />
         ) : (

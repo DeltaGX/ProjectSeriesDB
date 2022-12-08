@@ -21,7 +21,7 @@ const ReadOnlyRow = ({
                                 />
                                 </td >
                                 <td className='w-80 text-center border-4'>
-                                    <Link to={`/${note.ContType}/${note.Contid}`}><p className='text-blue-500 underline'>{note?.ContName}{console.log(note)}
+                                    <Link to={`/${note.ContType}/${note.Contid}`}><p className='text-blue-500 underline text-2xl break-all'>{note?.ContName}{console.log(note)}
                                     </p></Link>
                                 </td>
                                 <td className='border-4'>
@@ -75,67 +75,3 @@ const ReadOnlyRow = ({
 
 export default ReadOnlyRow;
 
-{/* <tbody>
-                    {Usernote.map((note,i) => {
-                            return(
-                            <tr key={i}>    
-                                <td className='border-4'>
-                                <img alt='404 not found' 
-                                     src={`https://image.tmdb.org/t/p/w500${note?.ContPoster}`} 
-                                     className='w-48 h-60'
-                                />
-                                </td >
-                                <td className='w-80 text-center border-4'>
-                                    <Link to={`/${note.ContType}/${note.Contid}`}><p className='text-blue-500 underline'>{note?.ContName}{console.log(note)}
-                                    </p></Link>
-                                </td>
-                                <td className='border-4'>
-                                    <p className='text-center' >{note.ContType}
-                                    </p>
-                                </td>
-                                <td className='border-4'>
-                                    <StatusDrop current={note?.Status} userid={user._id} contid={note?.Contid} Usernote={note} ></StatusDrop>
-                                </td>
-                            
-                                <td className='border-4 text-center'>
-                                    <div className="">
-                                        <input id="EPseen" type='number' className='w-10 text-center' 
-                                            defaultValue={note?.EPseen} 
-                                            min="1"
-                                            onChange={handleChange} 
-                                            onKeyPress={(e) => {if (!/[0-9]/.test(e.key)) {e.preventDefault()}}}
-                                        />
-                                    </div>
-                                </td>
-                                <td className='border-4 text-center'>
-                                    <div >
-                                        <input id="UserScore" type='number' className='text-center' 
-                                            defaultValue={note?.UserScore} min="0" max="10" 
-                                            onChange={handleChange} 
-                                            onKeyPress={(e) => {if (!/[0-9]/.test(e.key)) {e.preventDefault()}}}
-                                        />
-                                    </div>
-                                </td>
-                                <td className='border-4'>
-                                    <div >
-                                        <textarea id="Note" defaultValue={note?.Note} className='overflow-auto border-2 w-72' 
-                                            onChange={handleChange}>
-                                 </textarea>
-                                    </div>
-                                    </td>
-                                <td className='border-4 w-30 text-center mt-24'>
-                                    <button value='Save Edit' type='submit' className='text-blue-500 underline border-2 bg-white' >
-                                        SaveEdit
-                                    </button>
-                                    <button value='Delete'className='text-blue-500 underline border-2 bg-white'>
-                                        Remove
-                                    </button><br/>
-                                    {(note.ContType === "tv") ? 
-                                    <Link to={`/user/${user._id}/${note.Contid}`}>
-                                    <button className='text-blue-500 underline border-2 bg-white' onClick={()=>{localStorage.setItem('Contid',note?.Contid); localStorage.setItem('contenttype',note?.ContType)}}>
-                                        ChapterNote
-                                    </button></Link> : ""}
-                                </td>
-                                </tr>                        
-                    )})}
-                    </tbody> */}

@@ -1,4 +1,4 @@
-import React, { useState,useEffect,useLayoutEffect,Fragment } from 'react';
+import React, { useState,useEffect,Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react'
 import { useNavigate } from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -25,18 +25,18 @@ function Searchbar() {
         }
     }
     const handleClick = async (e) => {
-        const searchtype = localStorage.getItem('contenttype')  
+        let searchtype = localStorage.getItem('contenttype')  
         if (searchtype === null) {
             searchtype = 'movie'
         }
-        if (search != undefined){
+        if (search !== undefined){
         localStorage.setItem('search',search)
         navigate(`/search/${searchtype}/${search}`)
         }
         }
         
     useEffect(() => {
-        if ((localStorage.getItem('contenttype') != type) && (type != undefined)) {
+        if ((localStorage.getItem('contenttype') !== type) && (type !== undefined)) {
             localStorage.setItem('contenttype', type)
         }}, [handleDropClick]);
 
@@ -91,7 +91,7 @@ function Searchbar() {
         <div className="relative">
                 <input type="text" className="h-14 w-96  pl-5 pr-8 rounded z-0 focus:shadow focus:outline-none" placeholder="Search by Content type" onChange={e => setSearch(e.target.value)}
                 onKeyDown = {handleKeyDown}/>
-                <FontAwesomeIcon className='fa-2x mt-2 ml-2'id= "btnSearch" onClick={handleClick} icon={faMagnifyingGlass} />
+                <FontAwesomeIcon className='fa-2x mt-2 ml-2 hover:bg-sky-700' id= "btnSearch" onClick={handleClick} icon={faMagnifyingGlass} />
                 {/* <div className="absolute top-4 right-3"> <i className="fa fa-search text-gray-400 z-20 hover:text-gray-500">test</i> </div> */}
         </div>
     </div>

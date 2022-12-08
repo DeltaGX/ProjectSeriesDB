@@ -1,6 +1,16 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// const GenreSchema = new Schema({
+//     id:{
+//         type:Number
+//     },
+//     name:{
+//         type:String,
+//         require:true
+//     }
+// })
+
 const UserNoteSchema = new Schema({
     Contid:{
         type:Number,
@@ -17,11 +27,17 @@ const UserNoteSchema = new Schema({
     ContPoster:{
         type:String,
     },
+    ContGenre:{
+        type: Array,
+    },
     Note: {
         type:String
     },
     Status:{
         type:String, enum: ['PlantoWatch','Watching','Complete','Onhold','Stopped','']
+    },
+    Seasonseen:{
+        type:Number,
     },
     EPseen:{
         type:Number,

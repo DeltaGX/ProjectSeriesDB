@@ -4,7 +4,7 @@ import {
     createSlice,
   } from "@reduxjs/toolkit";
   import axios from "axios";
-  import { API_KEY, TMDB_BASE_URL, TMDB_genre_list} from "../Utils/constant";
+  import { API_KEY, TMDB_BASE_URL} from "../Utils/constant";
 
   const initialState = {
     movies: [],
@@ -103,7 +103,7 @@ import {
 
 export const fetchData = createAsyncThunk("getMovie/Data",
 async ({ type }, thunkAPI) => {
-  const {getMovie: {movies}} = thunkAPI.getState();
+  // const {getMovie: {movies}} = thunkAPI.getState();
   return getData(
     `${TMDB_BASE_URL}/trending/${type}/week?api_key=${API_KEY}`,
     true,

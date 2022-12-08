@@ -7,7 +7,7 @@ import { AuthContext } from '../Context/AuthContext.js';
 import axios from 'axios';
 import { API_KEY,TMDB_BASE_URL } from "../Utils/constant";
 
-export default (function OnlineCont({ }) {     
+export default (function OnlineCont() {     
         const type = localStorage.getItem('contenttype');
         const [AvailableAt,setAvailableAt] = useState();
         const [movieInfo, setmovieInfo] = useState([]);
@@ -77,15 +77,17 @@ export default (function OnlineCont({ }) {
           const handleChange = (e) => {
             setUsernote((prev) => ({ ...prev, Contid:movieInfo.id, ContType:type,
                 ContName:(movieInfo.name || movieInfo.title || movieInfo.original_name || movieInfo.original_title)
-                ,ContPoster:movieInfo.poster_path, [e.target.name]: e.target.value }));
+                ,ContPoster:movieInfo.poster_path,ContGenre:(movieInfo.genres.map(item => item.name)), [e.target.name]: e.target.value }));
+
           };
 
           const handleSave=async()=>{
-            if (user._id != undefined){
+            if (user._id !== undefined){
             try {
               const res = await axios.put(`http://localhost:4000/users/${user._id}`, 
               Usernote, {withCredentials:true})
               setsave(false)
+              console.log(res)
               window.location.reload()
             } catch (err) {
               console.log(err);}
@@ -134,7 +136,7 @@ export default (function OnlineCont({ }) {
                 <div className="relative w-4/5 min-h-screen bg-gray-100 m-auto flex flex-wrap "> {/* BigSquare */}
                     <img alt='' src={`https://image.tmdb.org/t/p/w500${movieInfo.poster_path}`} className='w-48 h-60 ml-10 mt-10 pr-4'/>
                     {user ? <div className='absolute top-72 left-8 w-50'>
-                        <p className='text-2xl ml-8 '>Your Status</p>
+                        <p className='text-2xl ml-8 '>Your Status {console.log(movieInfo)}</p>
                         {user && <StatusDrop2 current={Usernote?.Status} handlechange={handleChange} />}
                         {user && <div className="ml-6">
                         <div>{saveerror}</div>
@@ -192,7 +194,7 @@ export default (function OnlineCont({ }) {
                                         <p className='text-blue-500 underline text-3xl'>IMDB</p>
                                      </a>
                                 }
-                                <div className='flex items-center'>TMDBScore: {movieInfo?.vote_average}</div>
+                                <div className='flex items-center'>TMDBScore: {movieInfo?.vote_average} / 10</div>
                                 <div >from  {movieInfo?.vote_count}  vote</div>
                             {movieInfo?.homepage 
                                 &&  <div className='pt-4'>
@@ -218,7 +220,7 @@ export default (function OnlineCont({ }) {
                                 </div>
                                 <p className='text-3xl mt-10'> Trailer {console.log(Recommend)}</p>
                                 <div className='ratio ratio-4x3 mt-10'>
-                                <iframe src={`https://www.youtube.com/embed/${Trailer.key}`} title="youtube video" allow="fullscreen;"></iframe>
+                                <iframe src={`https://www.youtube.com/embed/${Trailer?.key}`} title="youtube video" allow="fullscreen;"></iframe>
                                 </div>
                                 </div>
                             </div>
@@ -226,7 +228,7 @@ export default (function OnlineCont({ }) {
                         <div className='h-20 bg-PYellow text-center w-screen pb-10'>
                             <p className='text-3xl pt-5'> You May Like</p>
                         </div>
-                        <div className='flex pb-10' >
+                        <div className='flex pb-10 pl-3' >
                             {Recommend?.map((movie) => {
                                     return <Card2 movieData={movie} key={movie.id} />;
                                 })}      

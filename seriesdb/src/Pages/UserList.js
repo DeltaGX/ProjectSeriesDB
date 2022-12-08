@@ -91,6 +91,7 @@ function Userlist(){
           const res = await axios.put(`http://localhost:4000/users/${user._id}`, 
           editRowData, {withCredentials:true})
           setsave(false)
+          console.log(res)
           window.location.reload()
         } catch (err) {
           console.log(err);}
@@ -108,7 +109,7 @@ function Userlist(){
 
     const filterNote = async(FilterControl)=>{
         let filtered = Usernote
-        var isfavourite = FilterControl.favourite == "true"; 
+        var isfavourite = FilterControl.favourite === "true"; 
         if (Usernote !== undefined){
           if(FilterControl.type !== 'all')
             {filtered = filtered.filter(note => note.ContType === FilterControl.type)}

@@ -57,17 +57,13 @@ function EpisodeList(){
     const handleFirstSave = async () => {
             try { 
              const Note = await axios.get(`http://localhost:4000/episodenote/${user._id}/${contid}`, { withCredentials: true })
-            //  console.log(Note.data);
                 if (Note.data === null && movieInfo !== undefined) {
                     const SeasonNumber = movieInfo?.seasons.length
-                    console.log(SeasonNumber)
                     const FullNote = []
                     for(let i=0; i<SeasonNumber;i++){
                         // const seasonnote =  Note?.SeasonNote.findIndex(({Season}) => Season === i)
                         const EpNumber = movieInfo?.seasons[i].episode_count
                         console.log(EpNumber)
-                        // const SeasonName = movieInfo?.seasons[i].name
-                        // const SeasonPoster = movieInfo?.seasons[i].poster_path
                         let note = []
                             for(let i=0; i<EpNumber;i++){
                                 // const Epnote =  seasonnote?.EpisodeNote.findIndex(({Episode}) => Episode === (i+1))
@@ -96,6 +92,67 @@ function EpisodeList(){
                     )
                     window.location.reload()
                  }
+                 if ( movieInfo?.seasons[Note.SeasonNote.length-1].episode_count > Note.SeasonNote[Note.SeasonNote.length-1].EpisodeNote.length){
+                    const dif =  movieInfo?.seasons[Note.SeasonNote.length-1].episode_count - Note.SeasonNote[Note.SeasonNote.length-1].EpisodeNote.length
+                    const FullNote = []
+                        const EpNumber = movieInfo?.seasons[Note.SeasonNote.length-1].episode_count
+                        let note = []
+                            for(let i=0; i<dif;i++){
+                                note.push(
+                                  {
+                                    "Episode":Note.SeasonNote[Note.SeasonNote.length-1].EpisodeNote.length+i+1,
+                                    "Note":'',
+                                    "Episodescore":undefined,
+                                    "isWatched":false,
+                                  }
+                                )
+                            }
+                        console.log(note)
+                        FullNote.push(
+                            {
+                                'Season':Note.SeasonNote.length-1,
+                                'EpisodeNote':note
+                            }
+                        )           
+
+                    console.log(FullNote)
+                    await axios.post(
+                        `http://localhost:4000/episodenote/${user._id}/${contid}`, 
+                        FullNote , 
+                        { withCredentials: true }
+                    )
+                    window.location.reload()}
+                 if ( movieInfo?.seasons.length > Note.SeasonNote.length){
+                    const dif = (movieInfo?.seasons.length) - (Note.SeasonNote.length)
+                    const FullNote = []
+                    for(let i=0; i<dif;i++){
+                        const EpNumber = movieInfo?.seasons[Note.SeasonNote.length + i + 1].episode_count
+                        let note = []
+                            for(let i=0; i<EpNumber;i++){
+                                note.push(
+                                  {
+                                    "Episode":i+1,
+                                    "Note":'',
+                                    "Episodescore":undefined,
+                                    "isWatched":false,
+                                  }
+                                )
+                            }
+                        console.log(note)
+                        FullNote.push(
+                            {
+                                'Season':Note.SeasonNote.length+i,
+                                'EpisodeNote':note
+                            }
+                        )           
+                    }
+                    console.log(FullNote)
+                    await axios.post(
+                        `http://localhost:4000/episodenote/${user._id}/${contid}`, 
+                        FullNote , 
+                        { withCredentials: true }
+                    )
+                    window.location.reload()}
             } catch(err){
                 console.log(err);
             }
